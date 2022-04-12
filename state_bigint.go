@@ -2,13 +2,14 @@ package endec
 
 import (
 	"fmt"
+	"math/big"
+	"reflect"
+
 	stateBig "github.com/filecoin-project/go-state-types/big"
 	"go.mongodb.org/mongo-driver/bson/bsoncodec"
 	"go.mongodb.org/mongo-driver/bson/bsonrw"
 	"go.mongodb.org/mongo-driver/bson/bsontype"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"math/big"
-	"reflect"
 )
 
 var (
@@ -22,7 +23,7 @@ func stateBigintEncodeValue(_ bsoncodec.EncodeContext, vw bsonrw.ValueWriter, va
 	b := val.Interface().(stateBig.Int)
 	var v primitive.Decimal128
 	if b.Nil() {
-		v, _ = primitive.ParseDecimal128("0")
+		v, _ = primitive.ParseDecimal128("0") // nolint: errcheck
 	} else {
 		v, _ = primitive.ParseDecimal128FromBigInt(b.Int, 0)
 	}
@@ -43,8 +44,8 @@ func stateBigintDecodeValue(_ bsoncodec.DecodeContext, vr bsonrw.ValueReader, va
 	case bsontype.Undefined:
 		err = vr.ReadUndefined()
 	case bsontype.Int32:
-		v, err := vr.ReadInt32()
-		if err != nil {
+		v, er := vr.ReadInt32()
+		if er != nil {
 			val.Set(reflect.ValueOf(stateBig.NewInt(int64(v))))
 			return nil
 		}

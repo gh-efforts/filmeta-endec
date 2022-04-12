@@ -2,11 +2,12 @@ package endec
 
 import (
 	"fmt"
+	"reflect"
+
 	"github.com/filecoin-project/go-address"
 	"go.mongodb.org/mongo-driver/bson/bsoncodec"
 	"go.mongodb.org/mongo-driver/bson/bsonrw"
 	"go.mongodb.org/mongo-driver/bson/bsontype"
-	"reflect"
 )
 
 var (

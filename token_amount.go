@@ -2,14 +2,15 @@ package endec
 
 import (
 	"fmt"
+	"math/big"
+	"reflect"
+
 	"github.com/filecoin-project/go-state-types/abi"
 	big1 "github.com/filecoin-project/go-state-types/big"
 	"go.mongodb.org/mongo-driver/bson/bsoncodec"
 	"go.mongodb.org/mongo-driver/bson/bsonrw"
 	"go.mongodb.org/mongo-driver/bson/bsontype"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"math/big"
-	"reflect"
 )
 
 var (
@@ -23,9 +24,9 @@ func amountEncodeValue(_ bsoncodec.EncodeContext, vw bsonrw.ValueWriter, val ref
 	b := val.Interface().(abi.TokenAmount)
 	var v primitive.Decimal128
 	if b.Nil() {
-		v, _ = primitive.ParseDecimal128("0")
+		v, _ = primitive.ParseDecimal128("0") // nolint: errcheck
 	} else {
-		v, _ = primitive.ParseDecimal128FromBigInt(b.Int, 0)
+		v, _ = primitive.ParseDecimal128FromBigInt(b.Int, 0) // nolint: errcheck
 	}
 	return vw.WriteDecimal128(v)
 }

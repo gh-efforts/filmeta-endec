@@ -2,11 +2,12 @@ package endec
 
 import (
 	"fmt"
+	"reflect"
+
 	"github.com/ipfs/go-cid"
 	"go.mongodb.org/mongo-driver/bson/bsoncodec"
 	"go.mongodb.org/mongo-driver/bson/bsonrw"
 	"go.mongodb.org/mongo-driver/bson/bsontype"
-	"reflect"
 )
 
 var (
